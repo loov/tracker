@@ -227,8 +227,7 @@ func main() {
 ```
 
 One important part here is that the order in which I create those doesn't matter,
-but it is important that I have an example of usage code and the other code
-both.
+but it is important that I have both sketches of both example of usage and the thing I'm using.
 
 The usage code could also be written immediately as a test, but I usually don't
 want to verify it in isolation, but rather how well it fits together with
@@ -272,20 +271,75 @@ a nicer name: "Tracker", so we refine it as well:
 package issue
 
 type Tracker interface {
-	Open(info Info) (ID, error)
+	Create(info Info) (ID, error)
 	Load(id ID) (Info, error)
 	Close(id ID) (error)
 	List() (issues []Info, error)
 }
 ```
 
-Obviously adjust the main.go as necessary.
+Obviously adjusting the main.go as necessary.
 
 
 5. Solidify the code
 --------------------
 
-Now that we have a good idea about the feature and how to put it into code,
+Now we have a good idea about the feature and how to put it into code,
 we shall go over and fill in all the missing details and ensure that we
 have comments and a few tests and are able to use it in some form.
 
+Here we add a stub implementation for the tracker and then write some tests
+for the tracker.
+
+Solidifying code -- means now that you have figured out the sketch, you can
+go and trace over it with nice clean looking lines, using the ruler and
+delete all the messy bits.
+
+The other thing what we want to do here is to make easier to understand
+and ensure whether the code really behaves as it should. In most cases you would
+want unit or behavior tests, but they are not the only way. You could also
+write property tests. Or write output that could be verified by hand,
+if the correct behavior is difficult to describe in code.
+
+Few interesting bits while solidifying code. When you come across questions,
+mark them as such. For example while writing the tracker test case, I made a
+mistake while writing:
+
+```
+	//file: issue/tracker_test.go
+	tracker.Close(id)
+	// ...
+	expect := Info{
+		ID:      id,
+		Caption: "Caption",
+		Desc:    "Desc",
+		Status:  Closed,     // <--- error, should be Done
+	}
+```
+
+I mixed up two things: the method is called "Close" and the resulting
+status is "Done". Because I made a mistake while writing this, it suggests to
+me that the code is not clear enough... but I'm not sure how to improve it.
+It probably isn't that important, so I'll mark it as a TODO and move on
+to other things:
+
+```
+// file: issue/info.go
+const (
+	//TODO: should tracker.Create renamed to "Open", because status is Open
+	Open = Status("Open") // Open means that the issue needs to be worked on
+	//TODO: should "Done" be renamed to "Closed", because tracker has method Close
+	Done = Status("Done") // Done means that the issue is completed and delivered
+)
+```
+
+I could try to figure out this immediately, but I really don't think I have
+necessary information right now and I will probably find out the details
+while implementing other things.
+
+
+6. Value done
+--------------------
+
+Now we have captured something of value in code. It can't be used easily
+right now, but we have something that someone would like to use.

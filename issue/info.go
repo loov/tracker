@@ -7,8 +7,10 @@ type ID int64
 type Status string
 
 const (
-	Open Status = "Open" // Open means that the issue needs to be worked on
-	Done        = "Done" // Done means that the issue is completed and delivered
+	//TODO: should tracker.Create renamed to "Open", because status is Open
+	Open = Status("Open") // Open means that the issue needs to be worked on
+	//TODO: should "Done" be renamed to "Closed", because tracker has method Close
+	Done = Status("Done") // Done means that the issue is completed and delivered
 )
 
 // Info contains primary information about an issue
