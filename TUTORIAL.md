@@ -343,3 +343,8 @@ while implementing other things.
 
 Now we have captured something of value in code. It can't be used easily
 right now, but we have something that someone would like to use.
+
+It might look that it was a really involved process that created only these
+few lines of code. In reality, it's pretty fluid and moves quite quickly. The
+only reason it looks involved is because I tried to write down everything I
+was thinking while writing the code.
